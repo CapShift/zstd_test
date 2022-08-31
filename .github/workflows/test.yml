@@ -200,7 +200,7 @@ jobs:
           for i in product system system_ext vendor odm; do
               rm -rf "$GITHUB_WORKSPACE"/images/$i.img
           done
-          zstd "$GITHUB_WORKSPACE"/images/super.img -o "$GITHUB_WORKSPACE"/images/super.img.zst --rm
+          zstd "$GITHUB_WORKSPACE"/images/super.img -o "$GITHUB_WORKSPACE"/images/super.zst --rm
           if [[ "${{ env.device }}" == "umi" ]]; then
               sudo 7z a "$GITHUB_WORKSPACE"/zip/miui_UMIPRE_${{ env.date }}.zip "$GITHUB_WORKSPACE"/images/*
               sudo rm -rf "$GITHUB_WORKSPACE"/images

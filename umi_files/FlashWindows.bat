@@ -29,9 +29,9 @@ if "%CHOICE%" equ "1" goto FLASH_ROOT
 if "%CHOICE%" equ "2" goto REMOVE_ROOT
 goto MENU
 :FLASH_ROOT
-if exist super.img.zst (
-   echo.正在转换 super.img.zstd
-   bin\Windows\zstd.exe --rm -d super.img.zst -o %IMGDIR%/super.img
+if exist super.zst (
+   echo.正在转换 super.zst
+   bin\Windows\zstd.exe --rm -d super.zst -o %IMGDIR%/super.img
    if "%ERRORLEVEL%" neq "0" (
       echo.转换失败！
       pause
@@ -50,9 +50,9 @@ if not exist %IMGDIR%\boot_magisk.img (
 )
 
 :REMOVE_ROOT
-if exist super.img.zst (
-   echo.正在转换 super.img.zstd
-   bin\Windows\zstd.exe --rm -d super.img.zst -o %IMGDIR%/super.img
+if exist super.zst (
+   echo.正在转换 super.zst
+   bin\Windows\zstd.exe --rm -d super.zst -o %IMGDIR%/super.img
    if "%ERRORLEVEL%" neq "0" (
       echo.转换失败！
       pause
