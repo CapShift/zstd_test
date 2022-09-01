@@ -9,11 +9,8 @@ if not exist bin\Windows (
    exit
 )
 cls
-if exist images set IMGDIR=images
-if exist firmware-update set IMGDIR=firmware-update
-if exist *.img move *.img %IMGDIR% 1>nul 2>nul
 
-if not exist %IMGDIR%/*boot* (
+if not exist *boot* (
    echo.
    echo.Boot 文件丢失，终止刷机
    echo.
@@ -31,13 +28,14 @@ goto MENU
 :FLASH_ROOT
 if exist super.zst (
    echo.正在转换 super.zst
-   bin\Windows\zstd.exe --rm -d super.zst -o %IMGDIR%/super.img
+   bin\Windows\zstd.exe --rm -d super.zst -o super.img
    if "%ERRORLEVEL%" neq "0" (
       echo.转换失败！
       pause
       exit
    )
-if not exist %IMGDIR%\boot_magisk.img (
+)
+if not exist boot_magisk.img (
    echo.
    echo.没有Root文件
    echo.
@@ -45,20 +43,21 @@ if not exist %IMGDIR%\boot_magisk.img (
    exit
 ) else (
    echo.
-   bin\Windows\fastboot flash boot %IMGDIR%/boot_magisk.img
+   bin\Windows\fastboot flash boot boot_magisk.img
    echo.
 )
 
 :REMOVE_ROOT
 if exist super.zst (
    echo.正在转换 super.zst
-   bin\Windows\zstd.exe --rm -d super.zst -o %IMGDIR%/super.img
+   bin\Windows\zstd.exe --rm -d super.zst -o super.img
    if "%ERRORLEVEL%" neq "0" (
       echo.转换失败！
       pause
       exit
    )
-if not exist %IMGDIR%\boot_official.img (
+)
+if not exist boot_official.img (
    echo.
    echo.没有官方Boot文件
    echo.
@@ -66,7 +65,7 @@ if not exist %IMGDIR%\boot_official.img (
    exit
 ) else (
    echo.
-   bin\Windows\fastboot flash boot %IMGDIR%/boot_official.img
+   bin\Windows\fastboot flash boot boot_official.img
    echo.
 )
 echo.
@@ -110,7 +109,7 @@ bin\Windows\fastboot flash "xbl_5" "firmware-update/xbl_5.elf"
 bin\Windows\fastboot flash "xbl_config_4" "firmware-update/xbl_config_4.elf"
 bin\Windows\fastboot flash "xbl_config_5" "firmware-update/xbl_config_5.elf"
 
-if exist %IMGDIR%\super.img bin\Windows\fastboot flash super %IMGDIR%/super.img
+if exist super.img bin\Windows\fastboot flash super super.img
 echo.刷完super可能会卡一会，请耐心等待！！！
 set /p WIPE="是否需要清除数据？(y/n) "
 if /i "%WIPE%" equ "y" (
