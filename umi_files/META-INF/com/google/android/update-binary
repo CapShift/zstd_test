@@ -50,7 +50,12 @@ ui_print "- 开始刷机"
 ui_print " "
 
 #boot
-package_extract_file "boot_magisk.img" "/dev/block/bootdevice/by-name/boot"
+if [[ $ZIPFILE == *Root* ]]; then
+    package_extract_file "boot_magisk.img" "/dev/block/bootdevice/by-name/boot"
+else
+    package_extract_file "boot_official.img" "/dev/block/bootdevice/by-name/boot"
+fi
+
 
 #firmware
 package_extract_file "firmware-update/vbmeta_system.img" "/dev/block/bootdevice/by-name/vbmeta_system"
