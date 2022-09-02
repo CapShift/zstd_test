@@ -17,15 +17,6 @@ if not exist *boot* (
    pause
    exit
 )
-echo.
-echo.^<1^> 开始刷机并刷入Root
-echo.^<2^> 开始刷机但不刷入Root
-echo.
-set /p CHOICE="请选择："
-if "%CHOICE%" equ "1" goto FLASH_ROOT
-if "%CHOICE%" equ "2" goto REMOVE_ROOT
-goto MENU
-:FLASH_ROOT
 if exist super.zst (
    echo.正在转换 super.zst
    bin\Windows\zstd.exe --rm -d super.zst -o super.img
@@ -35,6 +26,15 @@ if exist super.zst (
       exit
    )
 )
+echo.
+echo.^<1^> 开始刷机并刷入Root
+echo.^<2^> 开始刷机但不刷入Root
+echo.
+set /p CHOICE="请选择："
+if "%CHOICE%" equ "1" goto FLASH_ROOT
+if "%CHOICE%" equ "2" goto REMOVE_ROOT
+goto MENU
+:FLASH_ROOT
 if not exist boot_magisk.img (
    echo.
    echo.没有Root文件
@@ -48,15 +48,6 @@ if not exist boot_magisk.img (
 )
 
 :REMOVE_ROOT
-if exist super.zst (
-   echo.正在转换 super.zst
-   bin\Windows\zstd.exe --rm -d super.zst -o super.img
-   if "%ERRORLEVEL%" neq "0" (
-      echo.转换失败！
-      pause
-      exit
-   )
-)
 if not exist boot_official.img (
    echo.
    echo.没有官方Boot文件
@@ -69,10 +60,10 @@ if not exist boot_official.img (
    echo.
 )
 echo.
+set /p WIPE="是否需要清除数据？(y/n) "
 echo.
 echo.刷完super可能会卡一会，请耐心等待！！！
 echo.若卡在 ^<waiting for any device^> 请自行寻找驱动
-echo.
 echo.
 
 rem
@@ -111,7 +102,7 @@ bin\Windows\fastboot flash "xbl_config_5" "firmware-update/xbl_config_5.elf"
 
 if exist super.img bin\Windows\fastboot flash super super.img
 echo.刷完super可能会卡一会，请耐心等待！！！
-set /p WIPE="是否需要清除数据？(y/n) "
+
 if /i "%WIPE%" equ "y" (
    bin\Windows\fastboot erase metadata
    bin\Windows\fastboot erase userdata
