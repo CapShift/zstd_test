@@ -45,6 +45,7 @@ if not exist boot_magisk.img (
    echo.
    bin\Windows\fastboot flash boot boot_magisk.img
    echo.
+   goto FLASH
 )
 
 :REMOVE_ROOT
@@ -58,7 +59,9 @@ if not exist boot_official.img (
    echo.
    bin\Windows\fastboot flash boot boot_official.img
    echo.
+   goto FLASH
 )
+:FLASH
 echo.
 set /p WIPE="是否需要清除数据？(y/n) "
 echo.
